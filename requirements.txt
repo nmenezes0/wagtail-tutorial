@@ -1,2 +1,4 @@
 Django>=5.2,<5.3
 wagtail>=7.0,<7.1
+ruff
+
