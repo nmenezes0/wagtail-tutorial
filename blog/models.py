@@ -98,9 +98,9 @@ class Author(models.Model):
 
 class BlogTagIndexPage(Page):
     def get_context(self, request):
-        tag = request.GET.get('tag')
+        tag = request.GET.get("tag")
         blogpages = BlogPage.objects.filter(tags__name=tag)
 
         context = super().get_context(request)
-        context['blogpages'] = blogpages
+        context["blogpages"] = blogpages
         return context
