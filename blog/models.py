@@ -1,10 +1,12 @@
 from django.db import models
+from django import forms
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+from wagtail.admin.panels import MultiFieldPanel, FieldPanel
 
 
 class BlogIndexPage(Page):
@@ -24,6 +26,8 @@ class BlogPage(Page):
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True)
 
+    authors = ParentalManyToManyField('blog.Author', blank=True)
+
     def main_image(self):
         gallery_item = self.gallery_images.first()
         if gallery_item:
@@ -36,8 +40,14 @@ class BlogPage(Page):
         index.SearchField("body"),
     ]
 
-    content_panels = Page.content_panels + ["date", "intro", "body"]
-
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            "date",
+            # Change this:
+            FieldPanel("authors", widget=forms.CheckboxSelectMultiple),
+        ], heading="Blog information"),
+        "intro", "body", "gallery_images"
+    ]
 
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(
