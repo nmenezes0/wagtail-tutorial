@@ -54,8 +54,8 @@ class BlogPage(Page):
         MultiFieldPanel(
             [
                 "date",
-                # Change this:
                 FieldPanel("authors", widget=forms.CheckboxSelectMultiple),
+                "tags",
             ],
             heading="Blog information",
         ),
